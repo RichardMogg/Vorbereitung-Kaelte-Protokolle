@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -610,7 +609,7 @@
     </div>
     <h1>Prüf-/Wartungsprotokoll Kältetechnik</h1>
     <div class="subtitle">lt. § 22 Kältemittelverordnung und § 13 AStV</div>
-    <div class="version">LOKAL V3.5 – JSON-Import, Exportprüfung, Druck ohne Fotoliste</div>
+    <div class="version">LOKAL V3.6 – JSON-Import, keine Pflichtfeldprüfung</div>
   </header>
 
   <main>
@@ -624,12 +623,12 @@
       <div class="section-body">
         <div class="grid">
           <div class="field">
-            <label for="kundeInput">Kunde <span class="required-hint">*</span></label>
-            <input id="kundeInput" required autocomplete="off">
+            <label for="kundeInput">Kunde</label>
+            <input id="kundeInput" autocomplete="off">
           </div>
           <div class="field">
-            <label for="objektInput">Objekt <span class="required-hint">*</span></label>
-            <input id="objektInput" required autocomplete="off">
+            <label for="objektInput">Objekt</label>
+            <input id="objektInput" autocomplete="off">
           </div>
         </div>
         <button type="button" class="btn-secondary" id="saveStammdatenButton">Stammdaten speichern</button>
@@ -650,8 +649,8 @@
             </div>
 
             <div class="field">
-              <label>Anlagentyp <span class="required-hint">*</span></label>
-              <select data-field="anlagentyp" required>
+              <label>Anlagentyp</label>
+              <select data-field="anlagentyp">
                 <option value="">Anlagentyp auswählen</option>
                 <option value="Single/Mono - Split">Single/Mono - Split</option>
                 <option value="Multi Split">Multi Split</option>
@@ -666,8 +665,8 @@
             <div class="field"><label>Type</label><input data-field="type"></div>
             <div class="field"><label>Gesamtleistung</label><input data-field="gesamtleistung"></div>
             <div class="field"><label>Serien-Nr.</label><input data-field="seriennummer"></div>
-            <div class="field"><label>Datum <span class="required-hint">*</span></label><input type="date" data-field="datum" required></div>
-            <div class="field"><label>Techniker <span class="required-hint">*</span></label><input data-field="techniker" required></div>
+            <div class="field"><label>Datum</label><input type="date" data-field="datum"></div>
+            <div class="field"><label>Techniker</label><input data-field="techniker"></div>
             <div class="field"><label>Letzte Überprüfung</label><input type="month" data-field="letzteUeberpruefung"></div>
             <div class="field"><label>Nächste Überprüfung</label><input type="month" data-field="naechsteUeberpruefung"></div>
           </div>
@@ -763,15 +762,15 @@
       </details>
 
       <details class="section" id="sectionGesamt">
-        <summary><span>11. Gesamtzustand / Mängel<span class="summary-sub" id="summaryGesamt">Pflichtauswahl</span></span></summary>
+        <summary><span>11. Gesamtzustand / Mängel<span class="summary-sub" id="summaryGesamt">Auswahl</span></span></summary>
         <div class="section-body">
           <div class="overall-grid">
-            <label class="overall-option overall-ok"><input type="radio" name="gesamtzustand" value="keine Mängel" required> keine Mängel</label>
-            <label class="overall-option overall-warn"><input type="radio" name="gesamtzustand" value="leichte Mängel" required> leichte Mängel</label>
-            <label class="overall-option overall-bad"><input type="radio" name="gesamtzustand" value="mangelhaft" required> mangelhaft</label>
+            <label class="overall-option overall-ok"><input type="radio" name="gesamtzustand" value="keine Mängel"> keine Mängel</label>
+            <label class="overall-option overall-warn"><input type="radio" name="gesamtzustand" value="leichte Mängel"> leichte Mängel</label>
+            <label class="overall-option overall-bad"><input type="radio" name="gesamtzustand" value="mangelhaft"> mangelhaft</label>
           </div>
           <div class="field mangel-field" id="globalMangelWrap">
-            <label>Gesamt-Mangelbeschreibung <span class="required-hint">*</span></label>
+            <label>Gesamt-Mangelbeschreibung</label>
             <textarea id="globalMangelText"></textarea>
           </div>
         </div>
@@ -781,8 +780,8 @@
         <summary><span>12. Techniker / Unterschrift<span class="summary-sub" id="summaryUnterschrift">Technikername und Finger-Unterschrift</span></span></summary>
         <div class="section-body">
           <div class="field">
-            <label for="signTechnikerInput">Technikername <span class="required-hint">*</span></label>
-            <input id="signTechnikerInput" required autocomplete="off">
+            <label for="signTechnikerInput">Technikername</label>
+            <input id="signTechnikerInput" autocomplete="off">
           </div>
           <div class="signature-wrap">
             <canvas id="signatureCanvas" width="1000" height="300"></canvas>
@@ -828,7 +827,7 @@
   <footer id="footerText">GEBATECH GmbH | Gebäude- und Anlagentechnik | AUSTRIA 4400 Steyr | Im Stadtgut Zone E 20 | T +43 7252 93074 | F -400 | office@gebatech.at<br>FN 471952y | UID: ATU 72271329 | IBAN: AT39 3411 4000 0015 1092 | BIC: RZOOAT2L114 | Gerichtsstand: Landesgericht Steyr | www.gebatech.at</footer>
 
   <script>
-    var STORAGE_KEY = 'gebatech_wartungsprotokoll_kaelte_v34';
+    var STORAGE_KEY = 'gebatech_wartungsprotokoll_kaelte_v36';
     var lineBreak = String.fromCharCode(10);
     var csvLineBreak = String.fromCharCode(13, 10);
 
@@ -839,7 +838,7 @@
     var crcTable = null;
 
     var appState = {
-      version: 'V3.5',
+      version: 'V3.6',
       protocols: [],
       draft: null
     };
@@ -915,7 +914,7 @@
       renderProtocolList();
       updateSummaries();
       updateEditModeUI();
-      setStatus('Wartungsprotokoll V3.5 geladen. JSON-Import aktiv.', 'ok');
+      setStatus('Wartungsprotokoll V3.6 geladen. Pflichtfeldprüfung ist deaktiviert.', 'ok');
       startAtTop();
     });
 
@@ -1121,7 +1120,7 @@
           actionHtml +
         '</div>' +
         '<div class="mangel-field" data-mangel-wrap="true">' +
-          '<label>Mangelbeschreibung / Maßnahme <span class="required-hint">*</span></label>' +
+          '<label>Mangelbeschreibung / Maßnahme</label>' +
           '<textarea data-mangel-text="true"></textarea>' +
         '</div>';
 
@@ -1141,7 +1140,10 @@
       var isVisible = !!((notOk && notOk.checked) || (repaired && repaired.checked));
 
       wrap.classList.toggle('visible', isVisible);
-      text.required = isVisible;
+
+      if (text) {
+        text.required = false;
+      }
     }
 
     function addIndoorUnit(scrollToNew, values) {
@@ -1267,7 +1269,10 @@
       var needs = value === 'leichte Mängel' || value === 'mangelhaft';
 
       wrap.classList.toggle('visible', needs);
-      text.required = needs;
+
+      if (text) {
+        text.required = false;
+      }
 
       updateSummaries();
     }
@@ -1280,30 +1285,6 @@
 
       var wasEditing = editingIndex !== null;
       var targetIndex = editingIndex;
-      var issues = getCurrentProtocolIssuesForSave();
-
-      if (issues.length > 0) {
-        var message =
-          'Protokoll nicht vollständig! Trotzdem speichern?' +
-          lineBreak + lineBreak +
-          'Fehlende / unvollständige Punkte:' +
-          lineBreak +
-          '- ' + issues.slice(0, 12).join(lineBreak + '- ');
-
-        if (issues.length > 12) {
-          message += lineBreak + '- ... weitere ' + (issues.length - 12) + ' Punkt(e)';
-        }
-
-        if (!confirm(message)) {
-          setStatus(
-            wasEditing
-              ? 'Änderungen wurden nicht gespeichert. Protokoll ist noch unvollständig.'
-              : 'Protokoll wurde nicht übernommen. Protokoll ist noch unvollständig.',
-            'error'
-          );
-          return;
-        }
-      }
 
       try {
         setStatus(wasEditing ? 'Änderungen werden gespeichert ...' : 'Protokoll wird übernommen ...', 'ok');
@@ -1339,8 +1320,8 @@
           erstelltAm: existing ? existing.erstelltAm : now,
           bearbeitetAm: now,
           data: data,
-          vollstaendig: issues.length === 0,
-          unvollstaendigHinweise: issues
+          vollstaendig: true,
+          unvollstaendigHinweise: []
         };
 
         if (wasEditing) {
@@ -1356,12 +1337,7 @@
           updateSummaries();
           openSection('sectionListe', true);
 
-          setStatus(
-            issues.length
-              ? 'Änderungen gespeichert. Hinweis: Protokoll ist noch nicht vollständig.'
-              : 'Änderungen gespeichert. Bearbeitungsmodus wurde beendet.',
-            issues.length ? 'error' : 'ok'
-          );
+          setStatus('Änderungen gespeichert. Bearbeitungsmodus wurde beendet.', 'ok');
           return;
         }
 
@@ -1378,12 +1354,7 @@
         updateSummaries();
         openSection('sectionListe', true);
 
-        setStatus(
-          issues.length
-            ? 'Protokoll in Liste übernommen. Hinweis: Protokoll ist noch nicht vollständig.'
-            : 'Protokoll in Liste übernommen. Protokolle: ' + appState.protocols.length,
-          issues.length ? 'error' : 'ok'
-        );
+        setStatus('Protokoll in Liste übernommen. Protokolle: ' + appState.protocols.length, 'ok');
       } catch (err) {
         setStatus('Speichern fehlgeschlagen: ' + getErrorText(err), 'error');
       }
@@ -1472,7 +1443,6 @@
           'Objekt: ' + escapeHtml(stammdaten.objekt || '-') + '<br>' +
           'Datum: ' + escapeHtml(kopf.datum || '-') + '<br>' +
           '<span class="badge">Fotodateien geladen: ' + photos.length + '</span>' +
-          (record.vollstaendig === false ? ' <span class="badge badge-edit">unvollständig</span>' : '') +
           (isEditing ? ' <span class="badge badge-edit">in Bearbeitung</span>' : '') +
           '<div class="button-grid">' +
             '<button type="button" class="btn-warning" data-edit-index="' + i + '">Bearbeiten</button>' +
@@ -1709,7 +1679,7 @@
 
     function collectProtocol() {
       return {
-        exportFormat: 'GEBATECH_Wartungsprotokoll_Kaelte_JSON_V3_5',
+        exportFormat: 'GEBATECH_Wartungsprotokoll_Kaelte_JSON_V3_6',
         exportiertAm: new Date().toISOString(),
         stammdaten: {
           kunde: document.getElementById('kundeInput').value || '',
@@ -1769,130 +1739,19 @@
     }
 
     function getCurrentProtocolIssuesForSave() {
-      try {
-        handleConditionalFields();
-        var data = collectProtocol();
-        return getProtocolValidationIssues(data, 'aktuelles Protokoll');
-      } catch (err) {
-        return ['aktuelles Protokoll: Prüfung konnte nicht ausgeführt werden: ' + getErrorText(err)];
-      }
+      return [];
     }
 
     function getAllProtocolValidationIssuesForExport() {
-      var allIssues = [];
-
-      for (var i = 0; i < appState.protocols.length; i++) {
-        var record = appState.protocols[i];
-        var label = 'Protokoll ' + (i + 1) + ' / ' + (record.recordId || 'ohne ID');
-        var data = record.data || {};
-        var issues = getProtocolValidationIssues(data, label);
-
-        for (var j = 0; j < issues.length; j++) {
-          allIssues.push(issues[j]);
-        }
-      }
-
-      return allIssues;
+      return [];
     }
 
     function getProtocolValidationIssues(data, label) {
-      var issues = [];
-
-      if (!data) {
-        issues.push(label + ': keine Protokolldaten vorhanden.');
-        return issues;
-      }
-
-      var stammdaten = data.stammdaten || {};
-      var kopfdaten = data.kopfdaten || {};
-      var pruefung = data.pruefung || {};
-      var unterschrift = data.unterschrift || {};
-
-      if (!safeText(stammdaten.kunde)) {
-        issues.push(label + ': Kunde fehlt.');
-      }
-
-      if (!safeText(stammdaten.objekt)) {
-        issues.push(label + ': Objekt fehlt.');
-      }
-
-      if (!safeText(kopfdaten.anlagentyp)) {
-        issues.push(label + ': Anlagentyp fehlt.');
-      }
-
-      if (!safeText(kopfdaten.datum)) {
-        issues.push(label + ': Datum fehlt.');
-      }
-
-      if (!safeText(kopfdaten.techniker)) {
-        issues.push(label + ': Techniker in Kopfdaten fehlt.');
-      }
-
-      if (!safeText(data.gesamtzustand)) {
-        issues.push(label + ': Gesamtzustand fehlt.');
-      }
-
-      if (
-        (data.gesamtzustand === 'leichte Mängel' || data.gesamtzustand === 'mangelhaft') &&
-        !safeText(data.gesamtMangelbeschreibung)
-      ) {
-        issues.push(label + ': Gesamt-Mangelbeschreibung fehlt.');
-      }
-
-      if (!safeText(unterschrift.techniker)) {
-        issues.push(label + ': Technikername bei Unterschrift fehlt.');
-      }
-
-      if (
-        unterschrift.vorhanden !== true &&
-        !safeText(unterschrift.pngDataUrl) &&
-        !safeText(unterschrift.jpegDataUrl)
-      ) {
-        issues.push(label + ': Unterschrift fehlt.');
-      }
-
-      addChecklistValidationIssues(issues, label, 'Allgemein', pruefung.allgemein || []);
-      addChecklistValidationIssues(issues, label, 'Außeneinheit', pruefung.ausseneinheit || []);
-
-      var inneneinheiten = pruefung.inneneinheiten || [];
-
-      for (var i = 0; i < inneneinheiten.length; i++) {
-        var unit = inneneinheiten[i] || {};
-        var unitName =
-          'Inneneinheit ' +
-          (i + 1) +
-          (unit.bezeichnung ? ' – ' + unit.bezeichnung : '');
-
-        addChecklistValidationIssues(issues, label, unitName, unit.pruefpunkte || []);
-      }
-
-      addChecklistValidationIssues(issues, label, 'Bedienung / Regelung', pruefung.bedienungRegelung || []);
-      addChecklistValidationIssues(issues, label, 'Leitungssystem', pruefung.leitungssystem || []);
-
-      return issues;
+      return [];
     }
 
     function addChecklistValidationIssues(issues, label, bereich, rows) {
-      rows = rows || [];
-
-      for (var i = 0; i < rows.length; i++) {
-        var row = rows[i] || {};
-        var pruefpunkt = row.pruefpunkt || ('Prüfpunkt ' + (i + 1));
-        var mangelErforderlich =
-          row.status === 'nicht in Ordnung' ||
-          row.repariert === true;
-
-        if (mangelErforderlich && !safeText(row.mangelbeschreibung)) {
-          issues.push(
-            label +
-            ': ' +
-            bereich +
-            ' – ' +
-            pruefpunkt +
-            ': Mangelbeschreibung / Maßnahme fehlt.'
-          );
-        }
-      }
+      return;
     }
 
     function safeText(value) {
@@ -2344,19 +2203,13 @@
           recordId = createId('WP');
         }
 
-        var issues = [];
-
-        if (typeof getProtocolValidationIssues === 'function') {
-          issues = getProtocolValidationIssues(data, 'Import ' + (i + 1));
-        }
-
         result.push({
           recordId: recordId,
           erstelltAm: item.erstelltAm || new Date().toISOString(),
           bearbeitetAm: item.bearbeitetAm || new Date().toISOString(),
           data: data,
-          vollstaendig: issues.length === 0,
-          unvollstaendigHinweise: issues,
+          vollstaendig: true,
+          unvollstaendigHinweise: [],
           importiertAm: new Date().toISOString()
         });
       }
@@ -2402,10 +2255,6 @@
     }
 
     function updateImportedProtocolCompleteness() {
-      if (typeof getProtocolValidationIssues !== 'function') {
-        return;
-      }
-
       for (var i = 0; i < appState.protocols.length; i++) {
         var record = appState.protocols[i];
 
@@ -2413,11 +2262,8 @@
           continue;
         }
 
-        var label = 'Protokoll ' + (i + 1) + ' / ' + (record.recordId || 'ohne ID');
-        var issues = getProtocolValidationIssues(record.data, label);
-
-        record.vollstaendig = issues.length === 0;
-        record.unvollstaendigHinweise = issues;
+        record.vollstaendig = true;
+        record.unvollstaendigHinweise = [];
       }
     }
 
@@ -2430,23 +2276,6 @@
 
       if (!appState.protocols.length) {
         setStatus('Noch keine Protokolle in der Liste. Erst „Protokoll in Liste übernehmen“ drücken.', 'error');
-        openSection('sectionListe', true);
-        return;
-      }
-
-      var exportIssues = getAllProtocolValidationIssuesForExport();
-
-      if (exportIssues.length > 0) {
-        var message =
-          'Export nicht möglich. Es sind unvollständige Protokolle in der Liste:' +
-          lineBreak + lineBreak +
-          '- ' + exportIssues.slice(0, 40).join(lineBreak + '- ');
-
-        if (exportIssues.length > 40) {
-          message += lineBreak + '- ... weitere ' + (exportIssues.length - 40) + ' Punkt(e)';
-        }
-
-        setStatus(message, 'error');
         openSection('sectionListe', true);
         return;
       }
@@ -2543,7 +2372,7 @@
 
     function clearCompletelyAfterExport() {
       appState = {
-        version: 'V3.5',
+        version: 'V3.6',
         protocols: [],
         draft: null
       };
@@ -2586,15 +2415,15 @@
 
     function buildExportData() {
       return {
-        exportFormat: 'GEBATECH_Wartungsprotokolle_Kaelte_JSON_V3_5',
+        exportFormat: 'GEBATECH_Wartungsprotokolle_Kaelte_JSON_V3_6',
         exportiertAm: new Date().toISOString(),
         protokolle: appState.protocols.map(function (record) {
           return {
             recordId: record.recordId,
             erstelltAm: record.erstelltAm,
             bearbeitetAm: record.bearbeitetAm,
-            vollstaendig: record.vollstaendig,
-            unvollstaendigHinweise: record.unvollstaendigHinweise || [],
+            vollstaendig: true,
+            unvollstaendigHinweise: [],
             data: record.data
           };
         })
@@ -3293,4 +3122,3 @@
 </body>
 </html>
 ```
-
